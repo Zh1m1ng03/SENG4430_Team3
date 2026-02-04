@@ -15,7 +15,7 @@ The easiest way to run the broker backend is using Docker Compose. It will build
 
 2. **Build and start all services**:
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 
    This single command will:
@@ -25,28 +25,29 @@ The easiest way to run the broker backend is using Docker Compose. It will build
 
 3. **Start in detached mode** (runs in background):
    ```bash
-   docker-compose up --build -d
+   docker compose up --build -d
    ```
 
 ### Useful Commands
 
 - **View logs**:
   ```bash
-  docker-compose logs -f app
+  docker compose logs -f app
   ```
 
 - **Stop services**:
   ```bash
-  docker-compose down
+  docker compose down
   ```
 
 - **Stop services and remove volumes** (clean up database data):
   ```bash
-  docker-compose down -v
+  docker compose down -v
   ```
 
 The application will be available at:
 - **API**: http://localhost:8080
+- **Swagger UI**: http://localhost:8080/q/swagger-ui/
 - **Dev UI**: http://localhost:8080/q/dev/ (dev mode only)
 - **PostgreSQL**: localhost:5432
 
