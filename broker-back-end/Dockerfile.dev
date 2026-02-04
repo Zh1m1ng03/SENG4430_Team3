@@ -1,0 +1,21 @@
+FROM maven:3.8.6-openjdk-11-slim
+
+WORKDIR /workspace
+
+# Install Maven wrapper dependencies
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Copy project files needed for development
+COPY pom.xml /workspace/
+COPY mvnw /workspace/mvnw
+COPY .mvn /workspace/.mvn
+COPY src /workspace/src
+COPY docker-entrypoint.sh /workspace/docker-entrypoint.sh
+RUN chmod +x /workspace/mvnw && chmod +x /workspace/docker-entrypoint.sh
+
+# Expose Quarkus dev port
+EXPOSE 8080
+
+# Default command (can be overridden in docker-compose)
+# Dependencies will be downloaded when the container starts
+CMD ["./mvnw", "compile", "quarkus:dev"]

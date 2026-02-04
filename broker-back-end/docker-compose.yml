@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres-qfj
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: broker-back-end
+    ports:
+      - "8080:8080"
+    environment:
+      # Make Quarkus listen on all interfaces (0.0.0.0) so it's accessible from host
+      QUARKUS_HTTP_HOST: 0.0.0.0
+      QUARKUS_HTTP_PORT: 8080
+    volumes:
+      - .:/workspace
+      - maven_cache:/root/.m2
+    working_dir: /workspace
+    # PostgreSQL not needed when using H2
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    command: ["/workspace/mvnw", "compile", "quarkus:dev"]
+
+volumes:
+  postgres_data:
+  maven_cache:
