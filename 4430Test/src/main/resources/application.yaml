@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: 4430Test
+
+
+
+server:
+  port: 8888
