@@ -12,19 +12,27 @@
 
 #### 1. Configure MySQL credentials
 
-Edit `trading-application/src/main/resources/application.properties` and set your local MySQL user and password:
+Create a `.env` file in the `trading-project` directory (copy from `.env.example`):
 
-```properties
-spring.datasource.username=your_mysql_username
-spring.datasource.password=your_mysql_password
+```bash
+cp trading-project/.env.example trading-project/.env
 ```
+
+Edit `.env` with your local MySQL user and password:
+
+```
+MYSQL_USER=your_mysql_username
+MYSQL_PASSWORD=your_mysql_password
+```
+
+> `.env` is gitignored and must not be committed.
 
 #### 2. Initialize the database
 
 Run the SQL script to create the database and tables:
 
 ```bash
-mysql -u your_username -p < trading-application/src/sql/tradingapp.sql
+mysql -u your_username -p < trading-project/src/sql/tradingapp.sql
 ```
 
 Or open MySQL and execute the script manually:
@@ -34,20 +42,20 @@ mysql -u your_username -p
 ```
 
 ```sql
-source trading-application/src/sql/tradingapp.sql
+source trading-project/src/sql/tradingapp.sql
 ```
 
 #### 3. Run the application
 
 ```bash
-cd trading-application
+cd trading-project
 ./mvnw spring-boot:run
 ```
 
 Or with Maven installed:
 
 ```bash
-cd trading-application
+cd trading-project
 mvn spring-boot:run
 ```
 
