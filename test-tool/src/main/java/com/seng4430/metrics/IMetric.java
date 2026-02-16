@@ -1,4 +1,4 @@
-package com.seng4430.metric;
+package com.seng4430.metrics;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.seng4430.result.MetricResult;
