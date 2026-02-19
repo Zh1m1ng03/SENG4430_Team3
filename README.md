@@ -1,59 +1,62 @@
 # SENG4430 Team3 Project
 
-This repository contains the broker backend application built with Quarkus.
+## Trading Application
 
-## Running the Broker Backend with Docker
+### Prerequisites
 
-The easiest way to run the broker backend is using Docker Compose. It will build the images and start both PostgreSQL and the application.
+- **Java 17**
+- **MySQL** (running locally on port 3306)
+- **Maven**
 
-### Quick Start
+### Setup Instructions
 
-1. **Navigate to the broker-back-end directory**:
-   ```bash
-   cd broker-back-end
-   ```
+#### 1. Configure MySQL credentials
 
-2. **Build and start all services**:
-   ```bash
-   docker compose up --build
-   ```
+Create a `.env` file in the `trading-project` directory (copy from `.env.example`):
 
-   This single command will:
-   - Build the application Docker image
-   - Pull the PostgreSQL image (if needed)
-   - Start both PostgreSQL and the application containers
+```bash
+cp trading-project/.env.example trading-project/.env
+```
 
-3. **Start in detached mode** (runs in background):
-   ```bash
-   docker compose up --build -d
-   ```
+Edit `.env` with your local MySQL user and password:
 
-### Useful Commands
+```
+MYSQL_USER=your_mysql_username
+MYSQL_PASSWORD=your_mysql_password
+```
 
-- **View logs**:
-  ```bash
-  docker compose logs -f app
-  ```
+> `.env` is gitignored and must not be committed.
 
-- **Stop services**:
-  ```bash
-  docker compose down
-  ```
+#### 2. Initialize the database
 
-- **Stop services and remove volumes** (clean up database data):
-  ```bash
-  docker compose down -v
-  ```
+Run the SQL script to create the database and tables:
 
-The application will be available at:
-- **API**: http://localhost:8080
-- **Swagger UI**: http://localhost:8080/q/swagger-ui/
-- **Dev UI**: http://localhost:8080/q/dev/ (dev mode only)
-- **PostgreSQL**: localhost:5432
+```bash
+mysql -u your_username -p < trading-project/src/sql/tradingapp.sql
+```
 
-## Project Structure
+Or open MySQL and execute the script manually:
 
-- `broker-back-end/` - Quarkus-based broker backend application
-- `quality-analysis-tool/` - Code quality analysis tool
+```bash
+mysql -u your_username -p
+```
 
-For more details about running the broker backend locally or building the application, see the [broker-back-end README](broker-back-end/README.md).
+```sql
+source trading-project/src/sql/tradingapp.sql
+```
+
+#### 3. Run the application
+
+```bash
+cd trading-project
+./mvnw spring-boot:run
+```
+
+Or with Maven installed:
+
+```bash
+cd trading-project
+mvn spring-boot:run
+```
+
+The application will start at **http://localhost:9000**.
