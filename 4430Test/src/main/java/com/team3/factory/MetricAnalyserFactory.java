@@ -1,17 +1,17 @@
-package com.team3.service;
+package com.team3.analyser;
 
 
 // import other metrics...
 
-import com.team3.service.impl.CyclomaticComplexityMetric;
+import com.team3.analyser.impl.CyclomaticComplexityMetricAnalyser;
 
 import java.util.*;
 
-public class MetricFactory {
+public class MetricAnalyserFactory {
 
-    public static IMetric create(String metricId) {
+    public static IMetricAnalyser create(String metricId) {
         return switch (metricId.toUpperCase()) {
-            case "CC_AVG" -> new CyclomaticComplexityMetric();
+            case "CC_AVG" -> new CyclomaticComplexityMetricAnalyser();
             // case "LOC" -> new LinesOfCodeMetric();
             // case "NEST" -> new NestingDepthMetric();
             // ...
@@ -19,9 +19,9 @@ public class MetricFactory {
         };
     }
 
-    public static List<IMetric> createAll() {
+    public static List<IMetricAnalyser> createAll() {
         return List.of(
-                new CyclomaticComplexityMetric()
+                new CyclomaticComplexityMetricAnalyser()
         );
     }
 }

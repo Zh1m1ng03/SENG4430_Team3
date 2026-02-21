@@ -1,4 +1,4 @@
-package com.team3.service;
+package com.team3.analyser;
 
 import com.github.javaparser.ast.CompilationUnit;
 

@@ -1,10 +1,10 @@
-package com.team3.service.impl;
+package com.team3.analyser.impl;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.*;
-import com.team3.service.IMetric;
-import com.team3.service.MetricResult;
+import com.team3.analyser.IMetric;
+import com.team3.analyser.MetricResult;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
