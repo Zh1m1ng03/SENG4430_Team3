@@ -1,18 +1,5 @@
 # SENG4430 Team3 Project
 
-## Table of contents
-
-- [Project structure](#project-structure)
-- [Static Test Tool](#static-test-tool)
-- [Trading Application](#trading-application)
-  - [Prerequisites](#prerequisites)
-  - [Setup Instructions](#setup-instructions)
-    - [1. Configure MySQL credentials](#1-configure-mysql-credentials)
-    - [2. Initialize the database](#2-initialize-the-database)
-    - [3. Run the application](#3-run-the-application)
-
----
-
 ## Static Test Tool
 
 The **static-test-tool** is a Java-based static analysis CLI that analyses Java source code and computes software metrics. It uses [JavaParser](https://javaparser.org/) to parse `.java` files into ASTs and runs pluggable metric analysers (e.g. cyclomatic complexity) per file, then can aggregate results and generate JSON reports.
