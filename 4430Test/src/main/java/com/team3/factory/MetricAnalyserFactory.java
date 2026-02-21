@@ -1,8 +1,9 @@
-package com.team3.analyser;
+package com.team3.factory;
 
 
 // import other metrics...
 
+import com.team3.analyser.IMetricAnalyser;
 import com.team3.analyser.impl.CyclomaticComplexityMetricAnalyser;
 
 import java.util.*;

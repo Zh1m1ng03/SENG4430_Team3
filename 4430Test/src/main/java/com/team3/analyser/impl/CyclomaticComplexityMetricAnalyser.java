@@ -3,14 +3,15 @@ package com.team3.analyser.impl;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.*;
-import com.team3.analyser.IMetric;
-import com.team3.analyser.MetricResult;
+import com.team3.analyser.IMetricAnalyser;
+import com.team3.analyser.MetricContext;
+import com.team3.analyser.Result;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CyclomaticComplexityMetric implements IMetric {
+public final class CyclomaticComplexityMetricAnalyser implements IMetricAnalyser {
 
     @Override
     public String id() {
@@ -23,12 +24,17 @@ public class CyclomaticComplexityMetric implements IMetric {
     }
 
     @Override
-    public MetricResult analyze(CompilationUnit cu) {
+    public Result run(MetricContext context) {
+        return context.compilationUnit()
+                .map(this::analyze)
+                .orElseThrow(() -> new IllegalArgumentException("Static metric requires CompilationUnit in context"));
+    }
 
+    private Result analyze(CompilationUnit cu) {
         List<MethodDeclaration> methods = cu.findAll(MethodDeclaration.class);
 
         if (methods.isEmpty()) {
-            return new MetricResult(id(), "File", 0.0);
+            return new Result(id(), "File", 0.0);
         }
 
         int total = 0;
@@ -39,7 +45,7 @@ public class CyclomaticComplexityMetric implements IMetric {
 
         double avg = (double) total / methods.size();
 
-        return new MetricResult(id(), "File", avg);
+        return new Result(id(), "File", avg);
     }
 
     private int cyclomaticComplexity(MethodDeclaration method) {
