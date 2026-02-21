@@ -1,18 +1,18 @@
 package com.team3.analyser;
 
+import com.github.javaparser.ast.CompilationUnit;
+
 /**
- * Single interface for both static and dynamic metrics.
- * Static: use context.compilationUnit() and analyze the AST.
- * Dynamic: use context.runConfig() and run/measure the code.
+ * Interface for static metrics. Implementations analyse a CompilationUnit (AST).
  */
 public interface IMetricAnalyser {
     String id();                 // e.g. "CC_AVG"
     String description();        // e.g. "Average cyclomatic complexity per method"
 
     /**
-     * Run this metric. Static analysers use compilationUnit; dynamic use runConfig.
+     * Run this metric on the given compilation unit.
      */
-    Result run(MetricContext context);
+    Result run(CompilationUnit cu);
 
     /**
      * How to aggregate per-file results into a project summary. Default is AVG.

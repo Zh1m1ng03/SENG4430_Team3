@@ -4,7 +4,6 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.*;
 import com.team3.analyser.IMetricAnalyser;
-import com.team3.analyser.MetricContext;
 import com.team3.analyser.Result;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +23,8 @@ public final class CyclomaticComplexityMetricAnalyser implements IMetricAnalyser
     }
 
     @Override
-    public Result run(MetricContext context) {
-        return context.compilationUnit()
-                .map(this::analyze)
-                .orElseThrow(() -> new IllegalArgumentException("Static metric requires CompilationUnit in context"));
+    public Result run(CompilationUnit cu) {
+        return analyze(cu);
     }
 
     private Result analyze(CompilationUnit cu) {

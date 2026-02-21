@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Metric reports (generated) ###
-metric-report/
+static-metric-report/

@@ -4,10 +4,10 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.team3.analyser.IMetricAnalyser;
 import com.team3.factory.MetricAnalyserFactory;
-import com.team3.analyser.MetricContext;
 import com.team3.analyser.Result;
 import com.team3.entity.Report;
 import com.team3.report.ReportGenerator;
+import com.team3.report.ReportProperties;
 import com.team3.io.DefaultSourcePathHolder;
 import com.team3.io.JavaFileFinder;
 import com.team3.entity.TestCase;
@@ -31,13 +31,16 @@ public class TestCaseRegistry {
     private final JavaFileFinder javaFileFinder;
     private final DefaultSourcePathHolder defaultPathHolder;
     private final ReportGenerator reportGenerator;
+    private final ReportProperties reportProperties;
 
     public TestCaseRegistry(JavaSourceReader javaSourceReader, JavaFileFinder javaFileFinder,
-                            DefaultSourcePathHolder defaultPathHolder, ReportGenerator reportGenerator) {
+                            DefaultSourcePathHolder defaultPathHolder, ReportGenerator reportGenerator,
+                            ReportProperties reportProperties) {
         this.javaSourceReader = javaSourceReader;
         this.javaFileFinder = javaFileFinder;
         this.defaultPathHolder = defaultPathHolder;
         this.reportGenerator = reportGenerator;
+        this.reportProperties = reportProperties;
     }
 
     @Bean
@@ -79,8 +82,7 @@ public class TestCaseRegistry {
                         System.out.println("  " + file.getFileName() + " | skip: interface (not analysed)");
                         continue;
                     }
-                    MetricContext context = MetricContext.forStatic(cu);
-                    Result result = metric.run(context);
+                    Result result = metric.run(cu);
                     fileResults.add(new Report.FileResult(file.getFileName().toString(), result.value()));
                     System.out.println("  " + file.getFileName() + " | " + result.metricId() + " = " + result.value());
                 } catch (Exception e) {
@@ -95,11 +97,13 @@ public class TestCaseRegistry {
                 System.out.println("Project: " + fileResults.size() + " file(s), " + aggregation.label() + " " + metric.id() + " = " + projectValue);
 
                 Report report = new Report(metric.id(), metric.description(), fileResults, projectValue, aggregation.label());
-                try {
-                    Path savedPath = reportGenerator.write(report);
-                    System.out.println("Report generated and stored in " + savedPath);
-                } catch (Exception e) {
-                    System.out.println("Failed to save report: " + e.getMessage());
+                if (reportProperties.isEnabled()) {
+                    try {
+                        Path savedPath = reportGenerator.write(report);
+                        System.out.println("Report generated and stored in " + savedPath);
+                    } catch (Exception e) {
+                        System.out.println("Failed to save report: " + e.getMessage());
+                    }
                 }
             }
         } catch (Exception e) {

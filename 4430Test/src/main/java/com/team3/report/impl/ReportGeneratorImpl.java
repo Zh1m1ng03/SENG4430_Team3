@@ -14,12 +14,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Writes metric reports as JSON to metric-report/&lt;metricId&gt;/. Filename: &lt;metricId&gt;_yy-MM-dd_HHmmss.json
+ * Writes metric reports as JSON to static-metric-report/&lt;metricId&gt;/. Filename: &lt;metricId&gt;_yy-MM-dd_HHmmss.json
  */
 @Component
 public class ReportGeneratorImpl implements ReportGenerator {
 
-    public static final String METRIC_REPORT_DIR = "metric-report";
+    /** Fixed directory for all reports; not configurable. */
+    public static final String REPORT_DIR = "static-metric-report";
 
     private static final DateTimeFormatter NAME_FORMAT = DateTimeFormatter.ofPattern("yy-MM-dd_HHmmss");
 
@@ -27,7 +28,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
 
     @Override
     public Path write(Report report) {
-        Path metricDir = Path.of(METRIC_REPORT_DIR).resolve(report.metricId());
+        Path metricDir = Path.of(REPORT_DIR).resolve(report.metricId());
         String fileName = report.metricId() + "_" + LocalDateTime.now().format(NAME_FORMAT) + ".json";
         Path path = metricDir.resolve(fileName);
         try {
