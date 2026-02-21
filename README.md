@@ -13,55 +13,6 @@
 
 ---
 
-## Project structure
-
-```mermaid
-flowchart TB
-    subgraph repo["SENG4430_Team3"]
-        subgraph static["static-test-tool"]
-            static_cli[Application / CLI]
-            static_io[io: JavaFileFinder, JavaSourceReader]
-            static_analyser[analyser: IMetricAnalyser, Result]
-            static_report[report: ReportGenerator, ReportProperties]
-            static_cli --> static_io
-            static_cli --> static_analyser
-            static_analyser --> static_report
-        end
-        subgraph trading["trading-project"]
-            trading_web[Controllers / Thymeleaf]
-            trading_svc[Services]
-            trading_dao[DAO / MySQL]
-            trading_web --> trading_svc
-            trading_svc --> trading_dao
-        end
-        docs["documents/"]
-    end
-```
-
-**Directory layout (main folders):**
-
-```
-SENG4430_Team3/
-├── static-test-tool/          # Static analysis CLI (Java 21, JavaParser)
-│   ├── src/main/java/com/team3/
-│   │   ├── Application.java
-│   │   ├── analyser/          # Metrics (e.g. cyclomatic complexity)
-│   │   ├── io/                # Source path & Java parsing
-│   │   ├── report/            # JSON report generation
-│   │   ├── entity/            # TestCase, Report
-│   │   ├── factory/           # MetricAnalyserFactory
-│   │   └── registry/          # TestCaseRegistry
-│   └── src/main/resources/
-│       └── application.yaml
-├── trading-project/           # Trading web app (Java 17, Spring Boot, MySQL)
-│   ├── src/main/java/.../     # controller, service, dao, model, dto, mapper
-│   ├── src/main/resources/    # templates, static, application.properties
-│   └── src/sql/               # tradingapp.sql
-└── documents/                 # Architecture and other docs
-```
-
----
-
 ## Static Test Tool
 
 The **static-test-tool** is a Java-based static analysis CLI that analyses Java source code and computes software metrics. It uses [JavaParser](https://javaparser.org/) to parse `.java` files into ASTs and runs pluggable metric analysers (e.g. cyclomatic complexity) per file, then can aggregate results and generate JSON reports.
@@ -84,6 +35,22 @@ Or with Maven installed: `mvn spring-boot:run`. Choose an option from the menu t
 **Configuration (`static-test-tool/src/main/resources/application.yaml`):**
 
 - `report.enabled`: Set to `true` to write JSON metric reports to `static-metric-report/` after running analyses; set to `false` to disable report generation (default in the file is `false`). The setting is bound to `ReportProperties` in the report generator.
+
+**Directory layout (main folders):**
+
+```
+static-test-tool/
+├── src/main/java/com/team3/
+│   ├── Application.java
+│   ├── analyser/          # Metrics (e.g. cyclomatic complexity)
+│   ├── io/                # Source path & Java parsing
+│   ├── report/            # JSON report generation
+│   ├── entity/            # TestCase, Report
+│   ├── factory/           # MetricAnalyserFactory
+│   └── registry/          # TestCaseRegistry
+└── src/main/resources/
+    └── application.yaml
+```
 
 ---
 
