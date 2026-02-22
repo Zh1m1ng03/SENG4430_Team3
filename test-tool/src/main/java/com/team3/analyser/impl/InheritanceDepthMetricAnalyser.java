@@ -6,7 +6,7 @@ import com.team3.analyser.Result;
 import org.springframework.stereotype.Service;
 
 @Service
-public final class DuplicateCodeRatioMetricAnalyser implements IMetricAnalyser {
+public final class InheritanceDepthMetricAnalyser implements IMetricAnalyser {
 
     @Override
     public String id() {
