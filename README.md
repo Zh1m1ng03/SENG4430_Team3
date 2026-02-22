@@ -8,7 +8,7 @@ The **static-test-tool** is a Java-based static analysis CLI that analyses Java 
 - **Reports**: Metric results can be written as JSON under `metric-report/<metricId>/` via `ReportGenerator`.
 - **CLI**: The tool runs as a Spring Boot application with an interactive menu; registered test cases appear as options that run the corresponding analyses.
 
-**Prerequisites**: Java 21, Maven.
+**Prerequisites**: Java 21, Maven...
 
 **Run from project root:**
 
@@ -46,7 +46,7 @@ static-test-tool/
 ### Prerequisites
 
 - **Java 17**
-- **MySQL** (running locally on port 3306)
+- **MySQL** (running locally on port "3306")
 - **Maven**
 
 ### Setup Instructions
