@@ -46,7 +46,7 @@ static-test-tool/
 ### Prerequisites
 
 - **Java 17**
-- **MySQL** (running locally on port 3306)
+- **MySQL** (running locally on port "3306")
 - **Maven**
 
 ### Setup Instructions
