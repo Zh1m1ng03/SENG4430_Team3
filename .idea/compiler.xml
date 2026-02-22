@@ -9,6 +9,7 @@
         <module name="4430Test" />
       </profile>
     </annotationProcessing>
+    <option name="BUILD_PROCESS_ADDITIONAL_VM_OPTIONS" value="-Djps.track.ap.dependencies=true" />
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
