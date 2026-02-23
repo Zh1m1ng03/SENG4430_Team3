@@ -1,8 +1,10 @@
 package com.team3.dynamicMetric.dto;
 
+import com.team3.dynamicMetric.model.Portfolio;
+
 import java.util.*;
 
-import com.chainsys.tradingapp.model.Portfolio;
+
 
 public class PortfolioDTO extends BasePortfolioDTO {
     private String pnlValue;
