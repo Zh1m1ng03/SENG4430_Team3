@@ -1,4 +1,4 @@
-package com.team3.config;
+package com.team3.dynamicMetric.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

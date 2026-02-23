@@ -1,4 +1,4 @@
-package com.team3.dto;
+package com.team3.dynamicMetric.dto;
 
 public class CategoryDTO {
 	private String capCategory;

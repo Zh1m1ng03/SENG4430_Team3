@@ -1,4 +1,4 @@
-package com.team3.service;
+package com.team3.dynamicMetric.service;
 
 import com.team3.config.OkHttpConfig;
 import okhttp3.OkHttpClient;

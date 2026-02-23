@@ -1,4 +1,4 @@
-package com.team3.dto;
+package com.team3.dynamicMetric.dto;
 
 public abstract class BaseStockDTO {
     private int stockId;

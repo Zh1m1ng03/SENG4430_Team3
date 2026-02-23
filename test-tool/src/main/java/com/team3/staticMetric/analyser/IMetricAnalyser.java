@@ -1,4 +1,4 @@
-package com.team3.analyser;
+package com.team3.staticMetric.analyser;
 
 import com.github.javaparser.ast.CompilationUnit;
 
