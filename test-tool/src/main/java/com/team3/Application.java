@@ -1,6 +1,6 @@
 package com.team3;
 
-import com.team3.entity.TestCase;
+import com.team3.staticMetric.entity.TestCase;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

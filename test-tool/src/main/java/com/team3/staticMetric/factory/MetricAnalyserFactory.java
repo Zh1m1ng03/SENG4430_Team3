@@ -1,10 +1,10 @@
-package com.team3.factory;
+package com.team3.staticMetric.factory;
 
 
 // import other metrics...
 
-import com.team3.analyser.IMetricAnalyser;
-import com.team3.analyser.impl.CyclomaticComplexityMetricAnalyser;
+import com.team3.staticMetric.analyser.IMetricAnalyser;
+import com.team3.staticMetric.analyser.impl.CyclomaticComplexityMetricAnalyser;
 
 import java.util.*;
 

@@ -1,9 +1,9 @@
-package com.team3.report.impl;
+package com.team3.staticMetric.report.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.team3.entity.Report;
-import com.team3.report.ReportGenerator;
+import com.team3.staticMetric.entity.Report;
+import com.team3.staticMetric.report.ReportGenerator;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

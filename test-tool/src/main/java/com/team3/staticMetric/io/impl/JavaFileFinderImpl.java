@@ -1,6 +1,6 @@
-package com.team3.io.impl;
+package com.team3.staticMetric.io.impl;
 
-import com.team3.io.JavaFileFinder;
+import com.team3.staticMetric.io.JavaFileFinder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

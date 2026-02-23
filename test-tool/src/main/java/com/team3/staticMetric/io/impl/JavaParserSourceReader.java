@@ -1,8 +1,8 @@
-package com.team3.io.impl;
+package com.team3.staticMetric.io.impl;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.team3.io.JavaSourceReader;
+import com.team3.staticMetric.io.JavaSourceReader;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

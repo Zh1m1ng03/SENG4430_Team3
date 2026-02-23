@@ -1,10 +1,10 @@
-package com.team3.analyser.impl;
+package com.team3.staticMetric.analyser.impl;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.*;
-import com.team3.analyser.IMetricAnalyser;
-import com.team3.analyser.Result;
+import com.team3.staticMetric.analyser.IMetricAnalyser;
+import com.team3.staticMetric.analyser.Result;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

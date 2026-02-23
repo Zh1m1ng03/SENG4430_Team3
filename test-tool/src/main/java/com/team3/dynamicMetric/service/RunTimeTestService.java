@@ -1,6 +1,6 @@
 package com.team3.dynamicMetric.service;
 
-import com.team3.config.OkHttpConfig;
+import com.team3.dynamicMetric.config.OkHttpConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

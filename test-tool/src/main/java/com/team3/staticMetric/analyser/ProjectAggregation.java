@@ -1,4 +1,4 @@
-package com.team3.analyser;
+package com.team3.staticMetric.analyser;
 
 import java.util.List;
 import java.util.function.ToDoubleFunction;

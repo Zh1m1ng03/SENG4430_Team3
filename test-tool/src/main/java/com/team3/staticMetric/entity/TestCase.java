@@ -1,4 +1,4 @@
-package com.team3.entity;
+package com.team3.staticMetric.entity;
 
 import java.util.Objects;
 

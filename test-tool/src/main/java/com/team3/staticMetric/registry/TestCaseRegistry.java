@@ -1,17 +1,17 @@
-package com.team3.registry;
+package com.team3.staticMetric.registry;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.team3.analyser.IMetricAnalyser;
-import com.team3.factory.MetricAnalyserFactory;
-import com.team3.analyser.Result;
-import com.team3.entity.Report;
-import com.team3.report.ReportGenerator;
-import com.team3.report.ReportProperties;
-import com.team3.io.DefaultSourcePathHolder;
-import com.team3.io.JavaFileFinder;
-import com.team3.entity.TestCase;
-import com.team3.io.JavaSourceReader;
+import com.team3.staticMetric.analyser.IMetricAnalyser;
+import com.team3.staticMetric.factory.MetricAnalyserFactory;
+import com.team3.staticMetric.analyser.Result;
+import com.team3.staticMetric.entity.Report;
+import com.team3.staticMetric.report.ReportGenerator;
+import com.team3.staticMetric.report.ReportProperties;
+import com.team3.staticMetric.io.DefaultSourcePathHolder;
+import com.team3.staticMetric.io.JavaFileFinder;
+import com.team3.staticMetric.entity.TestCase;
+import com.team3.staticMetric.io.JavaSourceReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
