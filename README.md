@@ -1,8 +1,10 @@
 # SENG4430 Team3 Project
 
-## Static Test Tool..
 
-The **static-test-tool** is a Java-based static analysis CLI that analyses Java source code and computes software metrics. It uses [JavaParser](https://javaparser.org/) to parse `.java` files into ASTs and runs pluggable metric analysers (e.g. cyclomatic complexity) per file, then can aggregate results and generate JSON reports.
+## Test Tool .
+
+
+The **test-tool** is a Java-based static analysis CLI that analyses Java source code and computes software metrics. It uses [JavaParser](https://javaparser.org/) to parse `.java` files into ASTs and runs pluggable metric analysers (e.g. cyclomatic complexity) per file, then can aggregate results and generate JSON reports.
 
 - **Metrics**: Implementations of `IMetricAnalyser` (e.g. average cyclomatic complexity per method, `CC_AVG`) produce `Result(metricId, target, value)` per compilation unit.
 - **Reports**: Metric results can be written as JSON under `metric-report/<metricId>/` via `ReportGenerator`.

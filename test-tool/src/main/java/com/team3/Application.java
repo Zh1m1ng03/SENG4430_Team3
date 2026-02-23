@@ -33,8 +33,9 @@ public class Application implements CommandLineRunner {
             System.out.println();
             System.out.println("Please choose your option:");
             System.out.println("0. exit");
+            System.out.println("1. dynamic metric entry");
             for (int i = 0; i < testCases.size(); i++) {
-                System.out.println((i + 1) + ". " + testCases.get(i).getDisplayName());
+                System.out.println((i + 2) + ". " + testCases.get(i).getDisplayName());
             }
             System.out.print("enter: ");
 
@@ -53,8 +54,10 @@ public class Application implements CommandLineRunner {
                 continue;
             }
 
-            if (index >= 1 && index <= testCases.size()) {
-                testCases.get(index - 1).run();
+            if (index == 1) {
+                System.out.println("Dynamic metric entry (reserved).");
+            } else if (index >= 2 && index <= testCases.size() + 1) {
+                testCases.get(index - 2).run();
             } else {
                 System.out.println("invalid option. please enter again");
             }
