@@ -1,4 +1,4 @@
-package com.team3.report;
+package com.team3.staticMetric.report;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

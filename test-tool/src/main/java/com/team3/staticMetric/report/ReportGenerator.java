@@ -1,6 +1,6 @@
-package com.team3.report;
+package com.team3.staticMetric.report;
 
-import com.team3.entity.Report;
+import com.team3.staticMetric.entity.Report;
 
 import java.nio.file.Path;
 
