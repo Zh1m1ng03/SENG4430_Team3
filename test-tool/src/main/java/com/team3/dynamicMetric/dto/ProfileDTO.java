@@ -1,13 +1,15 @@
 package com.team3.dynamicMetric.dto;
 
 
+import com.team3.dynamicMetric.model.Nominee;
+import com.team3.dynamicMetric.model.Portfolio;
+import com.team3.dynamicMetric.model.Transaction;
+import com.team3.dynamicMetric.model.User;
+
 import java.util.List;
 import java.util.Map;
 
-import com.chainsys.tradingapp.model.Nominee;
-import com.chainsys.tradingapp.model.Portfolio;
-import com.chainsys.tradingapp.model.Transaction;
-import com.chainsys.tradingapp.model.User;
+
 
 public class ProfileDTO extends BasePortfolioDTO {
     private User user;
