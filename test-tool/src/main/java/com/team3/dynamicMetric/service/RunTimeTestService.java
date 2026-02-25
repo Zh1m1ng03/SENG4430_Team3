@@ -1,9 +1,6 @@
 package com.team3.dynamicMetric.service;
 
-import com.team3.dynamicMetric.config.OkHttpConfig;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,67 +14,43 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class RunTimeTestService {
 
-
     @Autowired
     OkHttpClient okHttpClient;
 
     @Autowired
     ThreadPoolExecutor threadPoolExecutor;
 
-    private static final String BASE_URL = "http://localhost:9000"; // target project url
-
-    public void testNSE() {
-
-        String url = BASE_URL + "/market/nse";
-
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
-        long start = System.nanoTime(); // start time
+    private static final String BASE_URL = "http://localhost:9000";
+    private static final MediaType JSON_TYPE = MediaType.get("application/json; charset=utf-8");
 
 
 
 
-        try (Response response = okHttpClient.newCall(request).execute() ){ // send request
-
-            long end = System.nanoTime(); // end time
-
-            long executeTime = (end - start) / 1_000_000; // convert to ms
-
-            if(response.isSuccessful()){ // request success
-
-                System.out.println("execute time: " + executeTime + " ms");
-
-            }
-            else {
-                System.out.println("request failed: " + response.code());
-            }
-
-
-
-
-
-        } catch (IOException e) {
-            System.err.println("request failed:" + e.getMessage());
-        }
-    }
+     // get /market/nse test
 
     public void testNSEThroughput() {
+        runGetThroughput("/market/nse", "market/nse");
+    }
 
-        String url = BASE_URL + "/market/nse";
 
-        int durationSeconds = 10;   // test time
-        int concurrency = 20;       // concurrent tasks number
+    // test get request throughput method
+
+    private void runGetThroughput(String path, String testName) {
+        String url = BASE_URL + path;
+
+        int durationSeconds = 10;
+        // 20 threads
+        int concurrency = 20;
 
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger errorCount = new AtomicInteger();
 
-        long loopTime = System.currentTimeMillis() + durationSeconds * 1000; // loop time
+        long loopTime = System.currentTimeMillis() + durationSeconds * 1000L; // loop time
 
+        // store all asynchronous tasks
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis(); // start time
 
         for (int i = 0; i < concurrency; i++) {
 
@@ -85,6 +58,7 @@ public class RunTimeTestService {
 
                 while (System.currentTimeMillis() < loopTime) {
 
+                    // send request
                     Request request = new Request.Builder()
                             .url(url)
                             .get()
@@ -108,16 +82,21 @@ public class RunTimeTestService {
             futures.add(future);
         }
 
-        // wait all thread
+        // wait all concurrent finish
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
-        long endTime = System.currentTimeMillis();
-        long totalTimeMs = endTime - startTime;
-
-        double qps = successCount.get() / (totalTimeMs / 1000.0);
-        System.out.println("Throughput is:  " + qps);
-
+        printResult(testName, startTime, successCount);
     }
 
 
+
+    private void printResult(String testName, long startTime, AtomicInteger successCount) {
+        long endTime = System.currentTimeMillis(); // endtime
+        long totalTimeMs = endTime - startTime;
+        double qps = successCount.get() / (totalTimeMs / 1000.0);
+        System.out.println("----------" + testName + " Throughput Test ---------");
+        System.out.println("Throughput(QPS): " + String.format("%.2f", qps));
+        System.out.println("-----------------------------------------------------");
+
+    }
 }
