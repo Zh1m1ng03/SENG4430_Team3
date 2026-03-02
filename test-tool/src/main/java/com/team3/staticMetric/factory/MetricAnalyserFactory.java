@@ -33,8 +33,8 @@ public class MetricAnalyserFactory {
         return List.of(
                 new CyclomaticComplexityMetricAnalyser(),
 
-                new UncaughtErrorMetricAnalyser() 
-                new InheritanceDepthMetricAnalyser()
+                new UncaughtErrorMetricAnalyser(),
+                new InheritanceDepthMetricAnalyser(),
                 new DuplicatedCodeRatioMetricAnalyser()
         );
     }
