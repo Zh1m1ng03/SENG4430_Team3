@@ -61,7 +61,8 @@ public class UncaughtErrorMetricAnalyser implements IMetricAnalyser {
         int callsInTry = 0;
 
         for (TryStmt tryStmt : tryStatements) {
-            boolean isNested = tryStmt.findAncestorOfType(TryStmt.class).isPresent();
+            // 修复：使用 findAncestor 而不是 findAncestorOfType
+            boolean isNested = tryStmt.findAncestor(TryStmt.class).isPresent();
             if (!isNested) {
                 callsInTry += tryStmt.getTryBlock().findAll(MethodCallExpr.class).size();
             }
