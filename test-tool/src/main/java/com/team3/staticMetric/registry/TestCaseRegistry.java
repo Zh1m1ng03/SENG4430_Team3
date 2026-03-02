@@ -74,6 +74,27 @@ public class TestCaseRegistry {
             }
             defaultPathHolder.setDefaultPath(path);
             System.out.println("Found " + javaFiles.size() + " Java file(s). Running " + metric.id() + "...");
+
+            if (metric.isProjectLevel()) {
+                Report report = metric.runOnProject(path, javaFiles);
+                for (Report.FileResult fr : report.fileResults()) {
+                    System.out.println("  " + fr.fileName() + " | " + report.metricId() + " = " + fr.value());
+                }
+                System.out.println("---");
+                System.out.println("Project: " + report.fileResults().size() + " file(s), "
+                        + report.projectAggregationLabel() + " " + report.metricId() + " = " + report.projectValue());
+
+                if (reportProperties.isEnabled()) {
+                    try {
+                        Path savedPath = reportGenerator.write(report);
+                        System.out.println("Report generated and stored in " + savedPath);
+                    } catch (Exception e) {
+                        System.out.println("Failed to save report: " + e.getMessage());
+                    }
+                }
+                return;
+            }
+
             List<Report.FileResult> fileResults = new ArrayList<>();
             for (Path file : javaFiles) {
                 try {
