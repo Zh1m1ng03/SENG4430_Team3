@@ -78,7 +78,7 @@ public class TestCaseRegistry {
             for (Path file : javaFiles) {
                 try {
                     var cu = javaSourceReader.read(file);
-                    if (isOnlyInterfaces(cu)) {
+                    if (isOnlyInterfaces(cu) && !"DIT_AVG".equals(metric.id())) {
                         System.out.println("  " + file.getFileName() + " | skip: interface (not analysed)");
                         continue;
                     }
