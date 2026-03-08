@@ -26,15 +26,8 @@ public class RunTimeTestService {
 
 
 
-     // get /market/nse test
-
-    public void testNSEThroughput() {
-        runGetThroughput("/market/nse", "market/nse");
-    }
-
 
     // test get request throughput method
-
     private void runGetThroughput(String path, String testName) {
         String url = BASE_URL + path;
 
@@ -88,6 +81,56 @@ public class RunTimeTestService {
         printResult(testName, startTime, successCount);
     }
 
+    // test post request and the parameter is @RequestBody
+    private void runPostThroughput(String path, String jsonBody, String testName) {
+        String url = BASE_URL + path;
+
+        int durationSeconds = 10;
+        int concurrency = 20;
+
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+
+        long loopTime = System.currentTimeMillis() + durationSeconds * 1000L;
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < concurrency; i++) {
+
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+
+                while (System.currentTimeMillis() < loopTime) {
+
+                    RequestBody body = RequestBody.create(jsonBody, JSON_TYPE);
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(body)
+                            .build();
+
+                    try (Response response = okHttpClient.newCall(request).execute()) {
+
+                        if (response.isSuccessful()) {
+                            successCount.incrementAndGet();
+                        } else {
+                            errorCount.incrementAndGet();
+                        }
+
+                    } catch (IOException e) {
+                        errorCount.incrementAndGet();
+                    }
+                }
+
+            }, threadPoolExecutor);
+
+            futures.add(future);
+        }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        printResult(testName, startTime, successCount);
+    }
 
 
     private void printResult(String testName, long startTime, AtomicInteger successCount) {
@@ -99,4 +142,14 @@ public class RunTimeTestService {
         System.out.println("-----------------------------------------------------");
 
     }
+
+    // get /market/nse test
+
+    public void testNSEThroughput() {
+        runGetThroughput("/market/nse", "market/nse");
+    }
+
+
+
+
 }
