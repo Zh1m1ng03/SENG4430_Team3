@@ -3,7 +3,10 @@ package com.seng4430.qulitytesttool;
 import com.seng4430.qulitytesttool.shared.cli.MenuController;
 import com.seng4430.qulitytesttool.shared.config.AnalysisConfig;
 import com.seng4430.qulitytesttool.staticanalysis.engine.StaticAnalysisEngine;
+import com.seng4430.qulitytesttool.staticanalysis.metric.MetricAnalyser;
 import com.seng4430.qulitytesttool.staticanalysis.metric.MetricRegistry;
+
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,8 +26,9 @@ public class QulityTestToolApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        StaticAnalysisEngine engine = new StaticAnalysisEngine(MetricRegistry.getAll(), config);
-        MenuController menu = new MenuController(engine, MetricRegistry.getAll());
+        List<MetricAnalyser> metrics = MetricRegistry.getAll(config);
+        StaticAnalysisEngine engine = new StaticAnalysisEngine(config);
+        MenuController menu = new MenuController(engine, metrics);
         menu.start();
     }
 }

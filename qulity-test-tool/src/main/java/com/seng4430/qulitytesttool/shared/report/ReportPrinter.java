@@ -7,47 +7,31 @@ import java.util.List;
 
 public class ReportPrinter {
 
-    private static final int WIDTH      = 50;
-    private static final String LINE    = "═".repeat(WIDTH);
-
     public static void printSingle(MetricResult result) {
         System.out.println();
-        System.out.println("╔" + LINE + "╗");
-        System.out.println("║" + centre(result.getMetricName(), WIDTH) + "║");
-        System.out.println("║" + centre(result.getQualityAspect(), WIDTH) + "║");
-        System.out.println("╠" + LINE + "╣");
-
+        System.out.println(result.getMetricName() + " (" + result.getQualityAspect() + ")");
+        System.out.println("Score: " + String.format("%.2f", result.getScore()) + "  [" + ratingLabel(result.getRating()) + "]");
+        System.out.println();
         for (String detail : result.getDetails()) {
-            System.out.println("║  " + padRight(detail, WIDTH - 2) + "║");
+            System.out.println("  " + detail);
         }
-
-        System.out.println("╠" + LINE + "╣");
-        String summary = "Score: " + String.format("%.2f", result.getScore())
-                + "   " + ratingLabel(result.getRating());
-        System.out.println("║  " + padRight(summary, WIDTH - 2) + "║");
-        System.out.println("╚" + LINE + "╝");
         System.out.println();
     }
 
     public static void printAll(List<MetricResult> results) {
         System.out.println();
-        System.out.println("╔" + LINE + "╗");
-        System.out.println("║" + centre("FULL QUALITY REPORT", WIDTH) + "║");
-        System.out.println("╠" + LINE + "╣");
+        System.out.println("FULL QUALITY REPORT");
+        System.out.println("-------------------");
 
         double total = 0;
         for (MetricResult r : results) {
-            String row = padRight("  " + r.getMetricName(), 30)
-                    + padRight(String.format("%.2f", r.getScore()), 10)
-                    + ratingLabel(r.getRating());
-            System.out.println("║" + padRight(row, WIDTH) + "║");
+            System.out.println("  - " + r.getMetricName() + ": " + String.format("%.2f", r.getScore()) + "  [" + ratingLabel(r.getRating()) + "]");
             total += ratingScore(r.getRating());
         }
 
         double overall = results.isEmpty() ? 0 : total / results.size();
-        System.out.println("╠" + LINE + "╣");
-        System.out.println("║  " + padRight("Overall Score:   " + String.format("%.0f", overall) + " / 100", WIDTH - 2) + "║");
-        System.out.println("╚" + LINE + "╝");
+        System.out.println();
+        System.out.println("Overall Score: " + String.format("%.0f", overall) + " / 100");
         System.out.println();
     }
 
@@ -65,16 +49,5 @@ public class ReportPrinter {
             case WARNING  -> 50.0;
             case CRITICAL -> 0.0;
         };
-    }
-
-    private static String centre(String text, int width) {
-        if (text.length() >= width) return text;
-        int pad = (width - text.length()) / 2;
-        return " ".repeat(pad) + text + " ".repeat(width - text.length() - pad);
-    }
-
-    private static String padRight(String text, int width) {
-        if (text.length() >= width) return text.substring(0, width);
-        return text + " ".repeat(width - text.length());
     }
 }
