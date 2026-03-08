@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: qulity-test-tool
+
+analysis:
+  ignore:
+    # File name patterns to exclude (supports * wildcard)
+    # Universal patterns (*Test.java, *Tests.java) and interfaces are always applied in code
+    # Add patterns here for project-specific files e.g. *DTO.java, *Entity.java, *Config.java
+    file-patterns: []
+    # Package prefixes to exclude (dot notation) e.g. com.example.generated
+    packages: []
