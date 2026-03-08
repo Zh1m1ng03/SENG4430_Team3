@@ -86,16 +86,18 @@ public class RunTimeTestService {
         String url = BASE_URL + path;
 
         int durationSeconds = 10;
+        // 20 threads
         int concurrency = 20;
 
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger errorCount = new AtomicInteger();
 
-        long loopTime = System.currentTimeMillis() + durationSeconds * 1000L;
+        long loopTime = System.currentTimeMillis() + durationSeconds * 1000L; // loop time
 
+        // store all asynchronous tasks
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis(); // start time
 
         for (int i = 0; i < concurrency; i++) {
 
@@ -103,6 +105,7 @@ public class RunTimeTestService {
 
                 while (System.currentTimeMillis() < loopTime) {
 
+                    // send request
                     RequestBody body = RequestBody.create(jsonBody, JSON_TYPE);
                     Request request = new Request.Builder()
                             .url(url)
@@ -127,6 +130,7 @@ public class RunTimeTestService {
             futures.add(future);
         }
 
+        // wait all concurrent finish
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
         printResult(testName, startTime, successCount);
