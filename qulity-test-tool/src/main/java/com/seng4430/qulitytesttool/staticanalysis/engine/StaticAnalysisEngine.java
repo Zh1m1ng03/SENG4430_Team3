@@ -2,7 +2,6 @@ package com.seng4430.qulitytesttool.staticanalysis.engine;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.seng4430.qulitytesttool.shared.config.AnalysisConfig;
 import com.seng4430.qulitytesttool.staticanalysis.metric.MetricAnalyser;
 import com.seng4430.qulitytesttool.staticanalysis.metric.MetricResult;
@@ -21,13 +20,11 @@ public class StaticAnalysisEngine {
             "*Tests.java"
     );
 
-    private final List<MetricAnalyser> analysers;
     private final AnalysisConfig config;
     private List<CompilationUnit> parsedUnits = new ArrayList<>();
     private boolean loaded = false;
 
-    public StaticAnalysisEngine(List<MetricAnalyser> analysers, AnalysisConfig config) {
-        this.analysers = analysers;
+    public StaticAnalysisEngine(AnalysisConfig config) {
         this.config = config;
     }
 
@@ -40,22 +37,13 @@ public class StaticAnalysisEngine {
                 .forEach(p -> {
                     try {
                         CompilationUnit cu = StaticJavaParser.parse(p);
-                        if (!isUniversallyIgnored(cu)) {
-                            parsedUnits.add(cu);
-                        }
+                        parsedUnits.add(cu);
                     } catch (Exception e) {
                         System.out.println("  Skipped (parse error): " + p.getFileName());
                     }
                 });
         loaded = true;
         return parsedUnits.size();
-    }
-
-    // Universal ignore: interfaces and annotation declarations
-    private boolean isUniversallyIgnored(CompilationUnit cu) {
-        return cu.findAll(ClassOrInterfaceDeclaration.class)
-                .stream()
-                .allMatch(ClassOrInterfaceDeclaration::isInterface);
     }
 
     // Ignore files matching hardcoded universal patterns or user-defined patterns from yaml

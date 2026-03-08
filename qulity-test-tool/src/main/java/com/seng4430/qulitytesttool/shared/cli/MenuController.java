@@ -13,10 +13,6 @@ import java.util.Scanner;
 
 public class MenuController {
 
-    private static final int WIDTH   = 50;
-    private static final String LINE    = "═".repeat(WIDTH);
-    private static final String DIVIDER = "─".repeat(WIDTH);
-
     private final StaticAnalysisEngine engine;
     private final List<MetricAnalyser> analysers;
     private final Scanner scanner;
@@ -38,39 +34,29 @@ public class MenuController {
 
     private void printMenu() {
         System.out.println();
-        System.out.println("╔" + LINE + "╗");
-        System.out.println("║" + centre("SENG4430 Software Quality Tool", WIDTH) + "║");
-        System.out.println("╠" + LINE + "╣");
-        System.out.println("║  Current Path: " + padRight(currentPath, WIDTH - 16) + "║");
-        System.out.println("╠" + LINE + "╣");
-        System.out.println("║  [1] Load / Change Target Path" + padRight("", WIDTH - 31) + "║");
-        System.out.println("║" + padRight(DIVIDER, WIDTH) + "║");
+        System.out.println("SENG4430 Software Quality Tool");
+        System.out.println("Current Path: " + currentPath);
+        System.out.println();
+        System.out.println("  1. Load / Change Target Path");
 
-        List<MetricAnalyser> active = analysers;
-        for (int i = 0; i < active.size(); i++) {
-            MetricAnalyser a = active.get(i);
-            String option = "  [" + (i + 2) + "] " + a.getMetricName()
-                    + "  (" + a.getQualityAspect() + ")";
-            System.out.println("║" + padRight(option, WIDTH) + "║");
+        for (int i = 0; i < analysers.size(); i++) {
+            MetricAnalyser a = analysers.get(i);
+            System.out.println("  " + (i + 2) + ". " + a.getMetricName() + " (" + a.getQualityAspect() + ")");
         }
 
-        int dynamicIndex = active.size() + 2;
-        int runAllIndex  = active.size() + 3;
+        int dynamicIndex = analysers.size() + 2;
+        int runAllIndex  = analysers.size() + 3;
 
-        System.out.println("║" + padRight(DIVIDER, WIDTH) + "║");
-        System.out.println("║  [" + dynamicIndex + "] Dynamic Metric (Coming Soon)" + padRight("", WIDTH - 33) + "║");
-        System.out.println("║" + padRight(DIVIDER, WIDTH) + "║");
-        System.out.println("║  [" + runAllIndex + "] Run All Metrics" + padRight("", WIDTH - 20) + "║");
-        System.out.println("║" + padRight(DIVIDER, WIDTH) + "║");
-        System.out.println("║  [0] Exit" + padRight("", WIDTH - 10) + "║");
-        System.out.println("╚" + LINE + "╝");
+        System.out.println("  " + dynamicIndex + ". Dynamic Metric (Coming Soon)");
+        System.out.println("  " + runAllIndex  + ". Run All Metrics");
+        System.out.println("  0. Exit");
+        System.out.println();
         System.out.print("Enter your choice: ");
     }
 
     private void handleInput(String input) {
-        List<MetricAnalyser> active = analysers;
-        int dynamicIndex = active.size() + 2;
-        int runAllIndex  = active.size() + 3;
+        int dynamicIndex = analysers.size() + 2;
+        int runAllIndex  = analysers.size() + 3;
 
         if (input.equals("0")) {
             System.out.println("Goodbye.");
@@ -86,8 +72,8 @@ public class MenuController {
             try {
                 int choice      = Integer.parseInt(input);
                 int metricIndex = choice - 2;
-                if (metricIndex >= 0 && metricIndex < active.size()) {
-                    runSingle(active.get(metricIndex));
+                if (metricIndex >= 0 && metricIndex < analysers.size()) {
+                    runSingle(analysers.get(metricIndex));
                 } else {
                     System.out.println("Invalid option. Please try again.");
                 }
@@ -102,11 +88,11 @@ public class MenuController {
         String input = scanner.nextLine().trim();
         Path path = Paths.get(input);
         try {
-            int count  = engine.loadPath(path);
+            int count = engine.loadPath(path);
             currentPath = input;
             System.out.println("Path loaded. Found " + count + " Java files.");
         } catch (IOException e) {
-            System.out.println("Error: could not read path — " + e.getMessage());
+            System.out.println("Error: could not read path - " + e.getMessage());
         }
         pause();
     }
@@ -129,14 +115,13 @@ public class MenuController {
             pause();
             return;
         }
-        List<MetricAnalyser> active = analysers;
-        if (active.isEmpty()) {
+        if (analysers.isEmpty()) {
             System.out.println("\nNo metrics are implemented yet.");
             pause();
             return;
         }
         System.out.println("\nRunning all metrics...");
-        List<MetricResult> results = engine.runAll(active);
+        List<MetricResult> results = engine.runAll(analysers);
         ReportPrinter.printAll(results);
         pause();
     }
@@ -144,16 +129,5 @@ public class MenuController {
     private void pause() {
         System.out.print("Press Enter to return to menu...");
         scanner.nextLine();
-    }
-
-    private static String centre(String text, int width) {
-        if (text.length() >= width) return text;
-        int pad = (width - text.length()) / 2;
-        return " ".repeat(pad) + text + " ".repeat(width - text.length() - pad);
-    }
-
-    private static String padRight(String text, int width) {
-        if (text.length() >= width) return text.substring(0, width);
-        return text + " ".repeat(width - text.length());
     }
 }
