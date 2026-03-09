@@ -20,12 +20,8 @@ public class MetricRegistry {
     public static List<MetricAnalyser> getAll(AnalysisConfig config) {
         return List.of(
                 new CyclomaticComplexityAnalyser(config.getCyclomaticComplexity()),
-
-                new UncaughtExceptionAnalyser()
-
-
-                new WeakCryptoAnalyser()
-
+                new UncaughtExceptionAnalyser(),
+                new WeakCryptoAnalyser(),
                 new DuplicateCodeAnalyser()
 
         );
