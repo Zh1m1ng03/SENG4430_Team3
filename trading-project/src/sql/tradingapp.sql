@@ -68,7 +68,7 @@ CREATE TABLE transactions (
 
 
 
---buy stock procedure 
+-- buy stock procedure
 
 
 DELIMITER //
@@ -188,6 +188,7 @@ DELIMITER ;
 
 -- trigger to change stock price when buy or sell for simplicity when stock is buy it price will increase by 10 and decrease 10 if sell.
 
+DELIMITER //
 
 CREATE TRIGGER adjust_stock_price AFTER INSERT ON transactions
 FOR EACH ROW
@@ -222,7 +223,7 @@ END //
 
 DELIMITER ;
 
---investment details of user by cap_category
+-- investment details of user by cap_category
 SELECT p.portfolio_id, p.user_id, p.stock_id,s.cap_category, s.company_name, s.symbol, p.quantity, p.avg_cost, p.total_cost
 FROM 
     portfolio p

@@ -1,5 +1,6 @@
 package com.team3;
 
+import com.team3.dynamicMetric.service.RunTimeTestService;
 import com.team3.staticMetric.entity.TestCase;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -56,6 +57,8 @@ public class Application implements CommandLineRunner {
 
             if (index == 1) {
                 System.out.println("Dynamic metric entry (reserved).");
+                RunTimeTestService runTimeTestService = new RunTimeTestService();
+
             } else if (index >= 2 && index <= testCases.size() + 1) {
                 testCases.get(index - 2).run();
             } else {
