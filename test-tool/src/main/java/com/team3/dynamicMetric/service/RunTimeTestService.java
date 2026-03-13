@@ -1,7 +1,8 @@
 package com.team3.dynamicMetric.service;
 
+import com.team3.dynamicMetric.cofig.HttpConfig;
+import com.team3.dynamicMetric.cofig.ThreadPoolConfig;
 import okhttp3.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,21 +15,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RunTimeTestService {
 
 
-    // okhttp config
-    OkHttpClient okHttpClient= new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .build();
+    HttpConfig httpConfig = new HttpConfig();
+    OkHttpClient okHttpClient = httpConfig.getOkHttpClient();
 
-    // threadpool config
-    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor( 20,
-            200,
-            10,
-            TimeUnit.SECONDS,
-            new LinkedBlockingDeque<>(100000),
-            Executors.defaultThreadFactory(),
-            new ThreadPoolExecutor.AbortPolicy());
+
+    ThreadPoolConfig threadPoolConfig = new ThreadPoolConfig();
+    ThreadPoolExecutor threadPoolExecutor = threadPoolConfig.getThreadPool();
+
+
+
+
 
     private static final String BASE_URL = "http://localhost:9000";
     private static final MediaType JSON_TYPE = MediaType.get("application/json; charset=utf-8");

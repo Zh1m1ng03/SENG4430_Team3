@@ -58,7 +58,7 @@ public class Application implements CommandLineRunner {
             if (index == 1) {
                 System.out.println("Dynamic metric entry (reserved).");
                 RunTimeTestService runTimeTestService = new RunTimeTestService();
-
+                 runTimeTestService.testLoginThroughput();
             } else if (index >= 2 && index <= testCases.size() + 1) {
                 testCases.get(index - 2).run();
             } else {
