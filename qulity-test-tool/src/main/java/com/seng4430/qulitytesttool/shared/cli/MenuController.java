@@ -37,17 +37,19 @@ public class MenuController {
         System.out.println("SENG4430 Software Quality Tool");
         System.out.println("Current Path: " + currentPath);
         System.out.println();
-        System.out.println("  1. Load / Change Target Path");
 
+
+        System.out.println("  1. " + "Throughpput (Reusability)");
         for (int i = 0; i < analysers.size(); i++) {
             MetricAnalyser a = analysers.get(i);
             System.out.println("  " + (i + 2) + ". " + a.getMetricName() + " (" + a.getQualityAspect() + ")");
         }
 
-        int dynamicIndex = analysers.size() + 2;
+
         int runAllIndex  = analysers.size() + 3;
 
-        System.out.println("  " + dynamicIndex + ". Dynamic Metric (Coming Soon)");
+
+        System.out.println("  6. Load / Change Target Path");
         System.out.println("  " + runAllIndex  + ". Run All Metrics");
         System.out.println("  0. Exit");
         System.out.println();
