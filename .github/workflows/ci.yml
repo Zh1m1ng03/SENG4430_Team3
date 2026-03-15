@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: quality-test-tool
 
     steps:
       - uses: actions/checkout@v4
@@ -28,4 +31,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: target/surefire-reports/
+          path: quality-test-tool/target/surefire-reports/
