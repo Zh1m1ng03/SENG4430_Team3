@@ -4,6 +4,7 @@ import com.seng4430.qulitytesttool.staticanalysis.engine.StaticAnalysisEngine;
 import com.seng4430.qulitytesttool.staticanalysis.metric.MetricAnalyser;
 import com.seng4430.qulitytesttool.staticanalysis.metric.MetricResult;
 import com.seng4430.qulitytesttool.shared.report.ReportPrinter;
+import com.seng4430.qulitytesttool.dynamicanalysis.service.RunTimeTestService;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -15,13 +16,15 @@ public class MenuController {
 
     private final StaticAnalysisEngine engine;
     private final List<MetricAnalyser> analysers;
+    private final RunTimeTestService throughputService;
     private final Scanner scanner;
     private String currentPath = "(none)";
 
-    public MenuController(StaticAnalysisEngine engine, List<MetricAnalyser> analysers) {
-        this.engine    = engine;
-        this.analysers = analysers;
-        this.scanner   = new Scanner(System.in);
+    public MenuController(StaticAnalysisEngine engine, List<MetricAnalyser> analysers, RunTimeTestService throughputService) {
+        this.engine            = engine;
+        this.analysers         = analysers;
+        this.throughputService = throughputService;
+        this.scanner           = new Scanner(System.in);
     }
 
     public void start() {
@@ -39,17 +42,18 @@ public class MenuController {
         System.out.println();
 
 
-        System.out.println("  1. " + "Throughpput (Reusability)");
+        System.out.println("  1. Load / Change Target Path");
         for (int i = 0; i < analysers.size(); i++) {
             MetricAnalyser a = analysers.get(i);
             System.out.println("  " + (i + 2) + ". " + a.getMetricName() + " (" + a.getQualityAspect() + ")");
         }
 
 
-        int runAllIndex  = analysers.size() + 3;
+        int throughputIndex = analysers.size() + 2;
+        int runAllIndex     = analysers.size() + 3;
 
 
-        System.out.println("  6. Load / Change Target Path");
+        System.out.println("  " + throughputIndex + ". Throughput (Reusability)");
         System.out.println("  " + runAllIndex  + ". Run All Metrics");
         System.out.println("  0. Exit");
         System.out.println();
@@ -66,8 +70,7 @@ public class MenuController {
         } else if (input.equals("1")) {
             loadPath();
         } else if (input.equals(String.valueOf(dynamicIndex))) {
-            System.out.println("\nThis metric is not yet available.");
-            pause();
+            runThroughput();
         } else if (input.equals(String.valueOf(runAllIndex))) {
             runAll();
         } else {
@@ -125,6 +128,12 @@ public class MenuController {
         System.out.println("\nRunning all metrics...");
         List<MetricResult> results = engine.runAll(analysers);
         ReportPrinter.printAll(results);
+        pause();
+    }
+
+    private void runThroughput() {
+        System.out.println("\nRunning Throughput (Reusability) tests...");
+        throughputService.testAllThroughput();
         pause();
     }
 

@@ -5,6 +5,7 @@ import com.seng4430.qulitytesttool.shared.config.AnalysisConfig;
 import com.seng4430.qulitytesttool.staticanalysis.engine.StaticAnalysisEngine;
 import com.seng4430.qulitytesttool.staticanalysis.metric.MetricAnalyser;
 import com.seng4430.qulitytesttool.staticanalysis.metric.MetricRegistry;
+import com.seng4430.qulitytesttool.dynamicanalysis.service.RunTimeTestService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class QulityTestToolApplication implements CommandLineRunner {
     @Autowired
     private AnalysisConfig config;
 
+    @Autowired
+    private RunTimeTestService runTimeTestService;
+
     public static void main(String[] args) {
         SpringApplication.run(QulityTestToolApplication.class, args);
     }
@@ -28,7 +32,7 @@ public class QulityTestToolApplication implements CommandLineRunner {
     public void run(String... args) {
         List<MetricAnalyser> metrics = MetricRegistry.getAll(config);
         StaticAnalysisEngine engine = new StaticAnalysisEngine(config);
-        MenuController menu = new MenuController(engine, metrics);
+        MenuController menu = new MenuController(engine, metrics, runTimeTestService);
         menu.start();
     }
 }
