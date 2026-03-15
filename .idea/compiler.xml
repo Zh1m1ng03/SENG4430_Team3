@@ -8,7 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="tradingapp" />
-        <module name="qulity-test-tool" />
+        <module name="quality-test-tool" />
         <module name="4430Test" />
       </profile>
     </annotationProcessing>
@@ -16,7 +16,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="4430Test" options="-parameters" />
-      <module name="qulity-test-tool" options="-parameters -parameters" />
+      <module name="quality-test-tool" options="-parameters -parameters" />
       <module name="tradingapp" options="-parameters" />
     </option>
   </component>

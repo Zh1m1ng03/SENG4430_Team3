@@ -11,8 +11,8 @@
     <groupId>com.seng4430</groupId>
     <artifactId>quality-test-tool</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>qulity-test-tool</name>
-    <description>qulity-test-tool</description>
+    <name>quality-test-tool</name>
+    <description>quality-test-tool</description>
     <properties>
         <java.version>21</java.version>
     </properties>

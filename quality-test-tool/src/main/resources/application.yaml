@@ -1,6 +1,6 @@
 spring:
   application:
-    name: qulity-test-tool
+    name: quality-test-tool
 
 analysis:
   cyclomatic-complexity:

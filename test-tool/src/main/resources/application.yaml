@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: 4430Test
-
-# Report generator: whether to write JSON reports (path is fixed: static-metric-report/)
-report:
-  enabled: false
-
