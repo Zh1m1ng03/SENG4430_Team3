@@ -16,7 +16,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 @SpringBootApplication
 @EnableConfigurationProperties(AnalysisConfig.class)
-public class QulityTestToolApplication implements CommandLineRunner {
+public class QualityTestToolApplication implements CommandLineRunner {
 
     @Autowired
     private AnalysisConfig config;
@@ -25,7 +25,7 @@ public class QulityTestToolApplication implements CommandLineRunner {
     private RunTimeTestService runTimeTestService;
 
     public static void main(String[] args) {
-        SpringApplication.run(QulityTestToolApplication.class, args);
+        SpringApplication.run(QualityTestToolApplication.class, args);
     }
 
     @Override
