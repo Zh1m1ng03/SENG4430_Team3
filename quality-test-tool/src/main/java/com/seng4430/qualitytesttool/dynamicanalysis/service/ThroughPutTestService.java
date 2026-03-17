@@ -1,18 +1,20 @@
-package com.team3.dynamicMetric.service;
+package com.seng4430.qualitytesttool.dynamicanalysis.service;
 
-import com.team3.dynamicMetric.cofig.HttpConfig;
-import com.team3.dynamicMetric.cofig.ThreadPoolConfig;
+
+import com.seng4430.qualitytesttool.dynamicanalysis.cofig.HttpConfig;
+import com.seng4430.qualitytesttool.dynamicanalysis.cofig.ThreadPoolConfig;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-public class RunTimeTestService {
+public class ThroughPutTestService {
 
 
     HttpConfig httpConfig = new HttpConfig();
@@ -37,7 +39,7 @@ public class RunTimeTestService {
     private void runGetThroughput(String path, String testName) {
         String url = BASE_URL + path;
 
-        int durationSeconds = 10;
+        int durationSeconds = 3;
         // 20 threads
         int concurrency = 20;
 
@@ -91,7 +93,7 @@ public class RunTimeTestService {
     private void runPostThroughput(String path, String jsonBody, String testName) {
         String url = BASE_URL + path;
 
-        int durationSeconds = 10;
+        int durationSeconds = 3;
         // 20 threads
         int concurrency = 20;
 
@@ -147,7 +149,7 @@ public class RunTimeTestService {
     private void runPostFormThroughput(String path, FormBody formBody, String testName) {
         String url = BASE_URL + path;
 
-        int durationSeconds = 10;
+        int durationSeconds = 3;
         // 20 threads
         int concurrency = 20;
 
@@ -215,14 +217,76 @@ public class RunTimeTestService {
         runGetThroughput("/market/nse", "get /market/nse");
     }
 
-    // ==================== UserController ====================
+    // post /register (multipart form with file upload)
+    public void testRegisterThroughput() {
+        String url = BASE_URL + "/register";
+        String testName = "post /register";
 
-    // get homepage
-    public void testHomeThroughput() {
-        runGetThroughput("/", "get /");
+        int durationSeconds = 3;
+        int concurrency = 20;
+
+        AtomicInteger successCount = new AtomicInteger();
+        AtomicInteger errorCount = new AtomicInteger();
+
+        long loopTime = System.currentTimeMillis() + durationSeconds * 1000L;
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < concurrency; i++) {
+            final int threadId = i;
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                int reqCount = 0;
+                int n =0;
+                while (System.currentTimeMillis() < loopTime) {
+                    // generate unique user"
+                    RequestBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("name", "Test User"+n)
+                            .addFormDataPart("email", "testuser"+ n + "@test.com")
+                            .addFormDataPart("pancardno", "ABCDE123"+n+"F")
+                            .addFormDataPart("phone", "1234567890")
+                            .addFormDataPart("password", "Test@1234"+n)
+                            .addFormDataPart("dob", "2000-01-01")
+                            .addFormDataPart("profile", "test.png",
+                                    RequestBody.create(new byte[]{(byte) 0x89, 0x50, 0x4E, 0x47}, MediaType.get("image/png")))
+                            .build();
+                    n++;
+
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(requestBody)
+                            .build();
+
+                    try (Response response = okHttpClient.newCall(request).execute()) {
+                        if (response.isSuccessful()) {
+                            successCount.incrementAndGet();
+                        } else {
+                            errorCount.incrementAndGet();
+                        }
+                    } catch (IOException e) {
+                        errorCount.incrementAndGet();
+                    }
+                    reqCount++;
+                }
+            }, threadPoolExecutor);
+
+            futures.add(future);
+        }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        printResult(testName, startTime, successCount);
     }
 
-    // get /login
+    // get /register page
+    public void testRegisterPageThroughput() {
+        runGetThroughput("/register", "get /register");
+    }
+
+
+    // get /login page
     public void testLoginPageThroughput() {
         runGetThroughput("/login", "get /login");
     }
@@ -230,21 +294,27 @@ public class RunTimeTestService {
     // post /login
     public void testLoginThroughput() {
         FormBody formBody = new FormBody.Builder()
-                .add("email", "test@example.com")
-                .add("password", "Test@1234")
+                .add("email", "testuser0@test.com")
+                .add("password", "Test@12340")
                 .build();
         runPostFormThroughput("/login", formBody, "post /login");
     }
 
-    // get /register
-    public void testRegisterPageThroughput() {
-        runGetThroughput("/register", "get /register");
+
+
+
+    // get homepage
+    public void testHomeThroughput() {
+        runGetThroughput("/", "get /");
     }
+
+
+
 
     // post /addMoney
     public void testAddMoneyThroughput() {
         FormBody formBody = new FormBody.Builder()
-                .add("userId", "1")
+                .add("userId", "312")
                 .add("amount", "100.0")
                 .build();
         runPostFormThroughput("/addMoney", formBody, "post /addMoney");
@@ -412,6 +482,7 @@ public class RunTimeTestService {
         testLoginPageThroughput();
         testLoginThroughput();
         testRegisterPageThroughput();
+        testRegisterThroughput();
         testAddMoneyThroughput();
         testLogoutThroughput();
         testProfileThroughput();
