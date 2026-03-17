@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: quality-test-tool
+
+analysis:
+  cyclomatic-complexity:
+    good-threshold: 3      # CC <= this is GOOD
+    warning-threshold: 6   # CC <= this is WARNING, above is CRITICAL
+    top-n: 10               # number of most complex methods to list
+  ignore:
+    # File name patterns to exclude (supports * wildcard)
+    # Universal patterns (*Test.java, *Tests.java) and interfaces are always applied in code
+    # Add patterns here for project-specific files e.g. *DTO.java, *Entity.java, *Config.java
+    file-patterns: ["*DAO.java", "*DTO.java"]
+    # Package prefixes to exclude (dot notation) e.g. com.example.generated
+    packages: ["com.chainsys.tradingapp.config", "com.chainsys.tradingapp.model", "com.chainsys.tradingapp.mapper"]
