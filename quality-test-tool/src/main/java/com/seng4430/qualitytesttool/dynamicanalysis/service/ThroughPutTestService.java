@@ -314,7 +314,7 @@ public class ThroughPutTestService {
     // post /addMoney
     public void testAddMoneyThroughput() {
         FormBody formBody = new FormBody.Builder()
-                .add("userId", "312")
+                .add("userId", "2")
                 .add("amount", "100.0")
                 .build();
         runPostFormThroughput("/addMoney", formBody, "post /addMoney");
@@ -332,7 +332,7 @@ public class ThroughPutTestService {
 
     // get /profilePicture
     public void testGetProfilePictureThroughput() {
-        runGetThroughput("/profilePicture?userId=1", "get /profilePicture");
+        runGetThroughput("/profilePicture?userId=2", "get /profilePicture");
     }
 
     // get /chatbot
@@ -360,7 +360,7 @@ public class ThroughPutTestService {
     public void testStockTransactionThroughput() {
         FormBody formBody = new FormBody.Builder()
                 .add("transactionType", "buy")
-                .add("userid", "1")
+                .add("userid", "2")
                 .add("stockId", "1")
                 .add("quantity", "10")
                 .add("price", "150.0")
@@ -371,7 +371,7 @@ public class ThroughPutTestService {
     // get /transactions
     public void testGetTransactionsThroughput() {
         FormBody formBody = new FormBody.Builder()
-                .add("userId", "1")
+                .add("userId", "2")
                 .build();
         runPostFormThroughput("/transactions", formBody, "post /transactions");
     }
@@ -418,7 +418,6 @@ public class ThroughPutTestService {
     public void testNomineeAddThroughput() {
         FormBody formBody = new FormBody.Builder()
                 .add("nomineeName", "TestNominee")
-                .add("relationship", "Brother")
                 .add("phoneNo", "1234567890")
                 .build();
         runPostFormThroughput("/nominee/add", formBody, "post /nominee/add");
@@ -477,14 +476,13 @@ public class ThroughPutTestService {
         System.out.println("   start throughput test");
 
 
+        testRegisterThroughput();
+        testRegisterPageThroughput();
+        testLoginThroughput();
+        testLoginPageThroughput();
         testNSEThroughput();
         testHomeThroughput();
-        testLoginPageThroughput();
-        testLoginThroughput();
-        testRegisterPageThroughput();
-        testRegisterThroughput();
         testAddMoneyThroughput();
-        testLogoutThroughput();
         testProfileThroughput();
         testGetProfilePictureThroughput();
         testChatbotPageThroughput();
@@ -507,6 +505,7 @@ public class ThroughPutTestService {
         testStocksThroughput();
         testStockDetailsThroughput();
         testRealtimeStockDataThroughput();
+        testLogoutThroughput();
 
         System.out.println("---------------------------------------------------");
         System.out.println("   all throughput tests completed");

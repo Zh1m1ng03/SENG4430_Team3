@@ -21,7 +21,7 @@ public class HttpConfig {
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
-                .cookieJar(new CookieJar() {
+                .cookieJar(new CookieJar() { // get cookie from backend response and save
                     private final Map<String, List<Cookie>> cookieStore = new HashMap<>();
 
                     @Override
