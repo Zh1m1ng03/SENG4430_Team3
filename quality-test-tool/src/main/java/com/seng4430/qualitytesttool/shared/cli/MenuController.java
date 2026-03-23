@@ -1,10 +1,10 @@
 package com.seng4430.qualitytesttool.shared.cli;
 
+import com.seng4430.qualitytesttool.dynamicanalysis.service.ThroughPutTestService;
 import com.seng4430.qualitytesttool.staticanalysis.engine.StaticAnalysisEngine;
 import com.seng4430.qualitytesttool.staticanalysis.metric.MetricAnalyser;
 import com.seng4430.qualitytesttool.staticanalysis.metric.MetricResult;
 import com.seng4430.qualitytesttool.shared.report.ReportPrinter;
-import com.seng4430.qualitytesttool.dynamicanalysis.service.RunTimeTestService;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,11 +16,11 @@ public class MenuController {
 
     private final StaticAnalysisEngine engine;
     private final List<MetricAnalyser> analysers;
-    private final RunTimeTestService throughputService;
+    private final ThroughPutTestService throughputService;
     private final Scanner scanner;
     private String currentPath = "(none)";
 
-    public MenuController(StaticAnalysisEngine engine, List<MetricAnalyser> analysers, RunTimeTestService throughputService) {
+    public MenuController(StaticAnalysisEngine engine, List<MetricAnalyser> analysers, ThroughPutTestService throughputService) {
         this.engine            = engine;
         this.analysers         = analysers;
         this.throughputService = throughputService;

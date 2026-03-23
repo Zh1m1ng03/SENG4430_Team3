@@ -1,11 +1,11 @@
 package com.seng4430.qualitytesttool;
 
+import com.seng4430.qualitytesttool.dynamicanalysis.service.ThroughPutTestService;
 import com.seng4430.qualitytesttool.shared.cli.MenuController;
 import com.seng4430.qualitytesttool.shared.config.AnalysisConfig;
 import com.seng4430.qualitytesttool.staticanalysis.engine.StaticAnalysisEngine;
 import com.seng4430.qualitytesttool.staticanalysis.metric.MetricAnalyser;
 import com.seng4430.qualitytesttool.staticanalysis.metric.MetricRegistry;
-import com.seng4430.qualitytesttool.dynamicanalysis.service.RunTimeTestService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class QualityTestToolApplication implements CommandLineRunner {
     private AnalysisConfig config;
 
     @Autowired
-    private RunTimeTestService runTimeTestService;
+    private ThroughPutTestService runTimeTestService;
 
     @Value("${app.cli.enabled:true}")
     private boolean cliEnabled;
