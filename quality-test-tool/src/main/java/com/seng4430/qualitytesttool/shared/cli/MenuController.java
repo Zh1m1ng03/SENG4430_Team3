@@ -29,20 +29,35 @@ public class MenuController {
 
     public void start() {
         while (true) {
-            printMenu();
+            if (!engine.isLoaded()) {
+                printEntryMenu();
+            } else {
+                printAnalyserMenu();
+            }
             String input = scanner.nextLine().trim();
             handleInput(input);
         }
     }
 
-    private void printMenu() {
+    private void printEntryMenu() {
+        System.out.println();
+        System.out.println("SENG4430 Software Quality Tool");
+        System.out.println("Current Path: " + currentPath);
+        System.out.println();
+        System.out.println("  1. Load Target Path");
+        System.out.println("  0. Exit");
+        System.out.println();
+        System.out.print("Enter your choice: ");
+    }
+
+    private void printAnalyserMenu() {
         System.out.println();
         System.out.println("SENG4430 Software Quality Tool");
         System.out.println("Current Path: " + currentPath);
         System.out.println();
 
 
-        System.out.println("  1. Load / Change Target Path");
+        System.out.println("  1. Change Target Path");
         for (int i = 0; i < analysers.size(); i++) {
             MetricAnalyser a = analysers.get(i);
             System.out.println("  " + (i + 2) + ". " + a.getMetricName() + " (" + a.getQualityAspect() + ")");
@@ -61,6 +76,25 @@ public class MenuController {
     }
 
     private void handleInput(String input) {
+        if (!engine.isLoaded()) {
+            handleEntryInput(input);
+            return;
+        }
+        handleAnalyserInput(input);
+    }
+
+    private void handleEntryInput(String input) {
+        if (input.equals("0")) {
+            System.out.println("Goodbye.");
+            System.exit(0);
+        } else if (input.equals("1")) {
+            loadPath();
+        } else {
+            System.out.println("Invalid option. Please try again.");
+        }
+    }
+
+    private void handleAnalyserInput(String input) {
         int dynamicIndex = analysers.size() + 2;
         int runAllIndex  = analysers.size() + 3;
 
