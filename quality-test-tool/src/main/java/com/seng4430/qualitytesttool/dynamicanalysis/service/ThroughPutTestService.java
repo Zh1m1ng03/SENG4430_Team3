@@ -37,6 +37,10 @@ public class ThroughPutTestService {
 
     // test get request throughput method
     private void runGetThroughput(String path, String testName) {
+
+        System.out.println();
+        System.out.println("start "+testName+" Throughput Test");
+        System.out.println();
         String url = BASE_URL + path;
 
         int durationSeconds = 3;
@@ -91,6 +95,10 @@ public class ThroughPutTestService {
 
     // test post request and the parameter is @RequestBody
     private void runPostThroughput(String path, String jsonBody, String testName) {
+
+        System.out.println();
+        System.out.println("start "+testName+" Throughput Test");
+        System.out.println();
         String url = BASE_URL + path;
 
         int durationSeconds = 3;
@@ -147,6 +155,10 @@ public class ThroughPutTestService {
 
     // test post request and the parameter is @RequestParam (form-encoded)
     private void runPostFormThroughput(String path, FormBody formBody, String testName) {
+
+        System.out.println();
+        System.out.println("start "+testName+" Throughput Test");
+        System.out.println();
         String url = BASE_URL + path;
 
         int durationSeconds = 3;
@@ -205,7 +217,15 @@ public class ThroughPutTestService {
         long totalTimeMs = endTime - startTime;
         double qps = successCount.get() / (totalTimeMs / 1000.0); // convert to second
         System.out.println("----------" + testName + " Throughput Test ---------");
-        System.out.println("Throughput(QPS): " + String.format("%.2f", qps));
+        String level;
+        if (qps == 0) {
+            level = "bad";
+        } else if (qps <= 1000 && qps>=1) {
+            level = "medium";
+        } else {
+            level = "good";
+        }
+        System.out.println("Throughput(QPS): " + String.format("%.2f", qps) + " " +"level: "+ level);
         System.out.println("-----------------------------------------------------");
 
     }
@@ -221,6 +241,10 @@ public class ThroughPutTestService {
     public void testRegisterThroughput() {
         String url = BASE_URL + "/register";
         String testName = "post /register";
+
+        System.out.println();
+        System.out.println("start "+testName+" Throughput Test");
+        System.out.println();
 
         int durationSeconds = 3;
         int concurrency = 20;
@@ -473,7 +497,13 @@ public class ThroughPutTestService {
 
     public void testAllThroughput() {
         System.out.println("---------------------------------------------------");
+        System.out.println("   Level Criteria:");
+        System.out.println("   QPS = 0         -> bad");
+        System.out.println("   QPS 1 ~ 1000    -> medium");
+        System.out.println("   QPS > 1000       -> good");
+
         System.out.println("   start throughput test");
+        System.out.println("---------------------------------------------------");
 
 
         testRegisterThroughput();
@@ -507,7 +537,7 @@ public class ThroughPutTestService {
         testRealtimeStockDataThroughput();
         testLogoutThroughput();
 
-        System.out.println("---------------------------------------------------");
+        System.out.println();
         System.out.println("   all throughput tests completed");
 
     }
