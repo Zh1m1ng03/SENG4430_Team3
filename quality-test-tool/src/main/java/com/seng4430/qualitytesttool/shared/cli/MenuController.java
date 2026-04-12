@@ -45,6 +45,7 @@ public class MenuController {
         System.out.println("Current Path: " + currentPath);
         System.out.println();
         System.out.println("  1. Load Target Path");
+        System.out.println("  2. Throughput (Reusability)");
         System.out.println("  0. Exit");
         System.out.println();
         System.out.print("Enter your choice: ");
@@ -89,6 +90,8 @@ public class MenuController {
             System.exit(0);
         } else if (input.equals("1")) {
             loadPath();
+        } else if (input.equals("2")) {
+            runThroughput();
         } else {
             System.out.println("Invalid option. Please try again.");
         }
