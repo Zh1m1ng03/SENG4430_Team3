@@ -128,10 +128,11 @@ public class CyclomaticComplexityAnalyser implements MetricAnalyser {
                     rank++, ratingLabel(m.cc), m.className + "::" + m.methodName, m.cc));
         }
 
-        // file summary (sorted by max CC desc)
+        // file summary (sorted by max CC desc, skip files with no issues)
         details.add("");
-        details.add("File Summary (sorted by highest CC):");
+        details.add("File Summary (sorted by highest CC, files with issues only):");
         for (FileComplexity f : files) {
+            if (f.maxCC <= goodThreshold) continue;
             details.add(String.format("  %-40s  methods: %2d  avg CC: %4.1f  max CC: %2d  [%s]",
                     f.fileName, f.methodCount, f.avgCC, f.maxCC, ratingLabel(f.maxCC)));
         }

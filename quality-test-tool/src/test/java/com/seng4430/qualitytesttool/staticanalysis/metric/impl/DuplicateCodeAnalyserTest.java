@@ -127,7 +127,7 @@ class DuplicateCodeAnalyserTest {
         String details = String.join("\n", result.getDetails());
 
         assertTrue(details.contains("CPD config: minTokens=30, ignoreIdentifiers=true"));
-        assertTrue(details.contains("File Summary (sorted by redundancy ratio):"));
+        assertTrue(details.contains("File Summary (sorted by redundancy ratio, files with issues only):"));
         assertTrue(details.contains("A.java") || details.contains("B.java"));
     }
 
