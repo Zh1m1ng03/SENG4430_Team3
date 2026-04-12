@@ -10,11 +10,12 @@ public class ReportPrinter {
     public static void printSingle(MetricResult result) {
         System.out.println();
         System.out.println(result.getMetricName() + " (" + result.getQualityAspect() + ")");
-        System.out.println("Score: " + String.format("%.2f", result.getScore()) + "  [" + ratingLabel(result.getRating()) + "]");
         System.out.println();
         for (String detail : result.getDetails()) {
             System.out.println("  " + detail);
         }
+        System.out.println();
+        System.out.println("Score: " + String.format("%.2f", result.getScore()) + "  [" + ratingLabel(result.getRating()) + "]");
         System.out.println();
     }
 

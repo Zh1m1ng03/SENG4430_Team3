@@ -290,9 +290,10 @@ public class WeakCryptoAnalyser implements MetricAnalyser {
         }
         details.add("");
 
-        // File table: every file, like DuplicateCode "File Summary"
-        details.add("File Summary (sorted by violation count, then by name):");
+        // File table: only files with violations
+        details.add("File Summary (sorted by violation count, files with issues only):");
         statsByFile.values().stream()
+                .filter(s -> s.violations > 0)
                 .sorted((a, b) -> {
                     int cmp = Integer.compare(b.violations, a.violations);
                     return cmp != 0 ? cmp : a.fileName.compareToIgnoreCase(b.fileName);

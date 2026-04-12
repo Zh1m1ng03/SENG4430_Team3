@@ -140,9 +140,10 @@ public class DuplicateCodeAnalyser implements MetricAnalyser {
         ));
         details.add("CPD config: minTokens=30, ignoreIdentifiers=true");
         details.add("");
-        details.add("File Summary (sorted by redundancy ratio):");
+        details.add("File Summary (sorted by redundancy ratio, files with issues only):");
 
         totalLinesByFile.entrySet().stream()
+                .filter(entry -> redundantLinesByFile.getOrDefault(entry.getKey(), Set.of()).size() > 0)
                 .sorted((a, b) -> {
                     double ratioA = fileRatio(a.getKey(), a.getValue(), redundantLinesByFile);
                     double ratioB = fileRatio(b.getKey(), b.getValue(), redundantLinesByFile);

@@ -89,9 +89,10 @@ public class UncaughtExceptionAnalyser implements MetricAnalyser {
                 totalMethodsAll, totalUncaughtAll, projectAvg));
         details.add(String.format("  Safe methods: %d | Safe ratio: %.2f%%",
                 safeMethodsAll, score));
-        details.add("  File Summary (sorted by uncaught ratio):");
+        details.add("  File Summary (sorted by uncaught ratio, files with issues only):");
 
         for (String[] row : fileRows) {
+            if (Integer.parseInt(row[2]) == 0) continue;
             details.add(String.format("    %-40s methods: %4s  uncaught: %4s  ratio: %s",
                     row[0], row[1], row[2], row[3]));
         }
