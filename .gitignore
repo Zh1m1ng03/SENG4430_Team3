@@ -54,3 +54,5 @@ HELP.md
 *.doc
 *.docx
 *.md
+!README.md
+!readme.md
