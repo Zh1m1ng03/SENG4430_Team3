@@ -48,3 +48,9 @@ logs/
 
 # Help / generated
 HELP.md
+
+# Documentation files
+*.pdf
+*.doc
+*.docx
+*.md
