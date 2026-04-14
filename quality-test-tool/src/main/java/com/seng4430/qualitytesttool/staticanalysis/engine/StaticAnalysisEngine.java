@@ -1,5 +1,6 @@
 package com.seng4430.qualitytesttool.staticanalysis.engine;
 
+import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.seng4430.qualitytesttool.shared.config.AnalysisConfig;
@@ -26,6 +27,7 @@ public class StaticAnalysisEngine {
 
     public StaticAnalysisEngine(AnalysisConfig config) {
         this.config = config;
+        StaticJavaParser.getConfiguration().setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
     }
 
     public int loadPath(Path path) throws IOException {

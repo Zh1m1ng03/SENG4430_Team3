@@ -45,7 +45,7 @@ public class MenuController {
         System.out.println("Current Path: " + currentPath);
         System.out.println();
         System.out.println("  1. Load Target Path");
-        System.out.println("  2. Throughput (Reusability)");
+        System.out.println("  2. Throughput (Reliability)");
         System.out.println("  0. Exit");
         System.out.println();
         System.out.print("Enter your choice: ");
@@ -69,7 +69,7 @@ public class MenuController {
         int runAllIndex     = analysers.size() + 3;
 
 
-        System.out.println("  " + throughputIndex + ". Throughput (Reusability)");
+        System.out.println("  " + throughputIndex + ". Throughput (Reliability)");
         System.out.println("  " + runAllIndex  + ". Run All Metrics");
         System.out.println("  0. Exit");
         System.out.println();
