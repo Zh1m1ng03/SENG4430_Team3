@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UncaughtExceptionAnalyserTest {
+public class UncaughtExceptionAnalyserTest {
 
     private UncaughtExceptionAnalyser analyser;
 
@@ -35,8 +35,6 @@ class UncaughtExceptionAnalyserTest {
                 .orElseThrow(() -> new AssertionError("No uncaught throws found: " + result.getDetails()));
     }
 
-    // Group 1: countUncaughtThrows
-
     @Test
     void testNoThrow_isZeroUncaught() {
         CompilationUnit cu = parse("void method() { int x = 1; }");
@@ -47,7 +45,7 @@ class UncaughtExceptionAnalyserTest {
     @Test
     void testThrowOutsideTry_isUncaught() {
         CompilationUnit cu = parse(
-            "void method() { throw new RuntimeException(); }"
+                "void method() { throw new RuntimeException(); }"
         );
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(1, extractUncaught(result));
@@ -56,10 +54,10 @@ class UncaughtExceptionAnalyserTest {
     @Test
     void testThrowInsideTry_isCaught() {
         CompilationUnit cu = parse(
-            "void method() {" +
-            "  try { throw new RuntimeException(); }" +
-            "  catch (Exception e) { }" +
-            "}"
+                "void method() {" +
+                        "  try { throw new RuntimeException(); }" +
+                        "  catch (Exception e) { }" +
+                        "}"
         );
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(0, extractUncaught(result));
@@ -68,10 +66,10 @@ class UncaughtExceptionAnalyserTest {
     @Test
     void testThrowInCatchBlock_isUncaught() {
         CompilationUnit cu = parse(
-            "void method() {" +
-            "  try { int x = 1; }" +
-            "  catch (Exception e) { throw new RuntimeException(); }" +
-            "}"
+                "void method() {" +
+                        "  try { int x = 1; }" +
+                        "  catch (Exception e) { throw new RuntimeException(); }" +
+                        "}"
         );
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(1, extractUncaught(result));
@@ -80,10 +78,10 @@ class UncaughtExceptionAnalyserTest {
     @Test
     void testMultipleThrowsOutsideTry() {
         CompilationUnit cu = parse(
-            "void method(int x) {" +
-            "  if (x < 0) throw new IllegalArgumentException();" +
-            "  if (x > 100) throw new RuntimeException();" +
-            "}"
+                "void method(int x) {" +
+                        "  if (x < 0) throw new IllegalArgumentException();" +
+                        "  if (x > 100) throw new RuntimeException();" +
+                        "}"
         );
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(2, extractUncaught(result));
@@ -92,23 +90,21 @@ class UncaughtExceptionAnalyserTest {
     @Test
     void testMixedThrows_oneCaughtOneNot() {
         CompilationUnit cu = parse(
-            "void method(int x) {" +
-            "  try { throw new RuntimeException(); }" +
-            "  catch (Exception e) { }" +
-            "  throw new IllegalStateException();" +
-            "}"
+                "void method(int x) {" +
+                        "  try { throw new RuntimeException(); }" +
+                        "  catch (Exception e) { }" +
+                        "  throw new IllegalStateException();" +
+                        "}"
         );
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(1, extractUncaught(result));
     }
 
-    // Group 2: score and rating
-
     @Test
     void testScore_allSafeMethods_isGood() {
         CompilationUnit cu = parse(
-            "void a() { int x = 1; }" +
-            "void b() { int y = 2; }"
+                "void a() { int x = 1; }" +
+                        "void b() { int y = 2; }"
         );
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(100.0, result.getScore(), 0.001);
@@ -121,8 +117,8 @@ class UncaughtExceptionAnalyserTest {
     @Test
     void testScore_noSafeMethods_isCritical() {
         CompilationUnit cu = parse(
-            "void a() { throw new RuntimeException(); }" +
-            "void b() { throw new IllegalStateException(); }"
+                "void a() { throw new RuntimeException(); }" +
+                        "void b() { throw new IllegalStateException(); }"
         );
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(0.0, result.getScore(), 0.001);
@@ -131,7 +127,7 @@ class UncaughtExceptionAnalyserTest {
 
     @Test
     void testScore_boundary_good() {
-        String safe   = "void safe%d() { int x = 1; } ";
+        String safe = "void safe%d() { int x = 1; } ";
         String unsafe = "void unsafe%d() { throw new RuntimeException(); } ";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 8; i++) sb.append(String.format(safe, i));
@@ -143,7 +139,7 @@ class UncaughtExceptionAnalyserTest {
 
     @Test
     void testScore_boundary_warning() {
-        String safe   = "void safe%d() { int x = 1; } ";
+        String safe = "void safe%d() { int x = 1; } ";
         String unsafe = "void unsafe%d() { throw new RuntimeException(); } ";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 5; i++) sb.append(String.format(safe, i));
@@ -155,7 +151,7 @@ class UncaughtExceptionAnalyserTest {
 
     @Test
     void testScore_belowWarning_isCritical() {
-        String safe   = "void safe%d() { int x = 1; } ";
+        String safe = "void safe%d() { int x = 1; } ";
         String unsafe = "void unsafe%d() { throw new RuntimeException(); } ";
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 3; i++) sb.append(String.format(safe, i));
@@ -164,8 +160,6 @@ class UncaughtExceptionAnalyserTest {
         assertEquals(30.0, result.getScore(), 0.001);
         assertEquals(MetricRating.CRITICAL, result.getRating());
     }
-
-    // Group 3: edge cases
 
     @Test
     void testEmptyClass_scoreIs100() {
@@ -177,7 +171,7 @@ class UncaughtExceptionAnalyserTest {
     @Test
     void testInterface_isSkipped() {
         CompilationUnit cu = StaticJavaParser.parse(
-            "interface MyInterface { void method(); }"
+                "interface MyInterface { void method(); }"
         );
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(100.0, result.getScore(), 0.001);
@@ -197,7 +191,7 @@ class UncaughtExceptionAnalyserTest {
     void testFileSummaryShownWithUpdatedFormatWhenIssuesExist() {
         CompilationUnit cu = parse(
                 "void safe() { int x = 1; }" +
-                "void unsafe() { throw new RuntimeException(); }"
+                        "void unsafe() { throw new RuntimeException(); }"
         );
 
         MetricResult result = analyser.analyse(List.of(cu));
