@@ -113,6 +113,9 @@ class UncaughtExceptionAnalyserTest {
         MetricResult result = analyser.analyse(List.of(cu));
         assertEquals(100.0, result.getScore(), 0.001);
         assertEquals(MetricRating.GOOD, result.getRating());
+        assertTrue(result.getDetails().contains("File Summary (sorted by uncaught ratio, all files):"));
+        assertTrue(result.getDetails().stream().anyMatch(line ->
+                line.matches("^  .*methods:\\s+\\d+ uncaught:\\s+0 ratio:\\s+0\\.00%$")));
     }
 
     @Test
@@ -188,5 +191,19 @@ class UncaughtExceptionAnalyserTest {
     @Test
     void testQualityAspect() {
         assertEquals("Reliability", analyser.getQualityAspect());
+    }
+
+    @Test
+    void testFileSummaryShownWithUpdatedFormatWhenIssuesExist() {
+        CompilationUnit cu = parse(
+                "void safe() { int x = 1; }" +
+                "void unsafe() { throw new RuntimeException(); }"
+        );
+
+        MetricResult result = analyser.analyse(List.of(cu));
+
+        assertTrue(result.getDetails().contains("File Summary (sorted by uncaught ratio, files with issues only):"));
+        assertTrue(result.getDetails().stream().anyMatch(line ->
+                line.matches("^  .*methods:\\s+\\d+ uncaught:\\s+\\d+ ratio:\\s+\\d+\\.\\d{2}%$")));
     }
 }

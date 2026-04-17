@@ -30,7 +30,7 @@ public class UncaughtExceptionAnalyser implements MetricAnalyser {
         int totalUncaughtAll = 0;
         int safeMethodsAll   = 0;
 
-        List<String[]> fileRows = new ArrayList<>();
+        List<FileSummaryRow> fileRows = new ArrayList<>();
 
         for (CompilationUnit unit : units) {
             String fileName = unit.getStorage()
@@ -55,12 +55,7 @@ public class UncaughtExceptionAnalyser implements MetricAnalyser {
 
             double fileRatio = 100.0 * fileUncaught / methods.size();
 
-            fileRows.add(new String[]{
-                fileName,
-                String.valueOf(methods.size()),
-                String.valueOf(fileUncaught),
-                String.format("%.2f%%", fileRatio)
-            });
+            fileRows.add(new FileSummaryRow(fileName, methods.size(), fileUncaught, fileRatio));
 
             analysedFiles    += 1;
             totalMethodsAll  += methods.size();
@@ -70,8 +65,8 @@ public class UncaughtExceptionAnalyser implements MetricAnalyser {
 
         // Sort by uncaught ratio descending
         fileRows.sort((a, b) -> Double.compare(
-            Double.parseDouble(b[3].replace("%", "")),
-            Double.parseDouble(a[3].replace("%", ""))
+                b.ratio(),
+                a.ratio()
         ));
 
         double score = totalMethodsAll == 0 ? 100.0
@@ -89,12 +84,24 @@ public class UncaughtExceptionAnalyser implements MetricAnalyser {
                 totalMethodsAll, totalUncaughtAll, projectAvg));
         details.add(String.format("  Safe methods: %d | Safe ratio: %.2f%%",
                 safeMethodsAll, score));
-        details.add("  File Summary (sorted by uncaught ratio, files with issues only):");
 
-        for (String[] row : fileRows) {
-            if (Integer.parseInt(row[2]) == 0) continue;
-            details.add(String.format("    %-40s methods: %4s  uncaught: %4s  ratio: %s",
-                    row[0], row[1], row[2], row[3]));
+        List<FileSummaryRow> summaryRows = score >= 100.0
+                ? fileRows
+                : fileRows.stream().filter(row -> row.uncaught() > 0).toList();
+
+        if (!summaryRows.isEmpty()) {
+            details.add("");
+            details.add(score >= 100.0
+                    ? "File Summary (sorted by uncaught ratio, all files):"
+                    : "File Summary (sorted by uncaught ratio, files with issues only):");
+            for (FileSummaryRow row : summaryRows) {
+                details.add(String.format(
+                        "  %-40s methods: %4d uncaught: %4d ratio: %6.2f%%",
+                        row.fileName(),
+                        row.methodCount(),
+                        row.uncaught(),
+                        row.ratio()));
+            }
         }
 
         return new MetricResult(getMetricName(), getQualityAspect(), score, rating, details);
@@ -128,4 +135,6 @@ public class UncaughtExceptionAnalyser implements MetricAnalyser {
     public String getQualityAspect() {
         return "Reliability";
     }
+
+    private record FileSummaryRow(String fileName, int methodCount, int uncaught, double ratio) {}
 }
