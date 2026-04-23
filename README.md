@@ -6,6 +6,10 @@ A Java-based software quality analysis tool built with Spring Boot. It performs 
 
 ## Team
 Guotai Xiao: Guotai812
+Zhiming Wu: Zh1m1ing03
+Sirui Zhang: SiruiZhang8
+Jinfeng He: Nicqwe
+Zhiye Ren: zhiyeren003
 
 ---
 
