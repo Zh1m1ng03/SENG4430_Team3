@@ -54,6 +54,7 @@ public class CyclomaticComplexityAnalyser implements MetricAnalyser {
     private int computeCC(MethodDeclaration method) {
         int[] count = {1};
 
+        // core
         method.accept(new VoidVisitorAdapter<Void>() {
             @Override public void visit(IfStmt n, Void arg)         { count[0]++; super.visit(n, arg); }
             @Override public void visit(ForStmt n, Void arg)        { count[0]++; super.visit(n, arg); }
@@ -144,7 +145,7 @@ public class CyclomaticComplexityAnalyser implements MetricAnalyser {
         return new MetricResult(getMetricName(), getQualityAspect(), score, rating, details);
     }
 
-    // ── helpers ───────────────────────────────────────────────────────────────
+    // helpers
 
     private int methodScore(int cc) {
         if (cc <= goodThreshold)    return 100;
@@ -161,7 +162,7 @@ public class CyclomaticComplexityAnalyser implements MetricAnalyser {
     @Override public String getMetricName()    { return "Cyclomatic Complexity"; }
     @Override public String getQualityAspect() { return "Maintainability"; }
 
-    // ── inner classes ─────────────────────────────────────────────────────────
+    //  inner classes
 
     private static class MethodComplexity {
         final String fileName;
